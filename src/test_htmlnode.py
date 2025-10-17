@@ -52,7 +52,7 @@ class TestHTMLNode(unittest.TestCase):
 
         self.assertEqual(
             link_node.props_to_html(),
-            'href="www.website.com" target="_blank"'
+            ' href="www.website.com" target="_blank"'
         )
 
     
