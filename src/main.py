@@ -1,6 +1,4 @@
-from textnode import TextType
-from textnode import TextNode
-
+from textnode import TextNode, TextType
 
 def main():
     text_obj = TextNode("some text", TextType.LINK, "www.fakeurl.com")
