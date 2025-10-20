@@ -48,11 +48,21 @@ class ParentNode(HTMLNode):
         super().__init__(tag, None, children, props)
     
     def to_html(self):
-        if self.tag == None:
+        if not self.tag:
             raise ValueError("No tag found. All parent nodes must have a tag.")
         
         if not self.children:
-            raise ValueError("No children found. All parent nodes must have children")
-
+            raise ValueError("No children found. All parent nodes must have children.")
         
+        output_string = ""
+        output_string += f"<{self.tag}"
+        if self.props:
+            output_string += self.props_to_html()
+        output_string += ">"
+        for child in self.children:
+            output_string += child.to_html()
+        
+        output_string += f"</{self.tag}>"
 
+        return output_string
+    
