@@ -1,7 +1,6 @@
 import unittest
 
-from textnode import TextType, TextNode
-from htmlnode import text_node_to_html_node
+from textnode import TextType, TextNode, text_node_to_html_node
 
 class TestTextToHTML(unittest.TestCase):
     print("\n\nRunning text to html tests...")
@@ -53,4 +52,3 @@ class TestTextToHTML(unittest.TestCase):
                 "alt": "This is an image node"
             }
         )
-    
