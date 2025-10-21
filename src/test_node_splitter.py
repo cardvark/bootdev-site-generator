@@ -1,6 +1,7 @@
 import unittest
 
-from textnode import TextNode, TextType, split_node_delimeter
+from textnode import TextNode, TextType
+from inline_markdown import split_node_delimeter
 
 class TestNodeSplitter(unittest.TestCase):
     print("\n\nrunning text node splitting tests...")
