@@ -1,4 +1,5 @@
 from textnode import TextNode, TextType
+import re
     
 def split_node_delimeter(old_nodes, delimiter, text_type):
     output_list = []
@@ -23,4 +24,19 @@ def split_node_delimeter(old_nodes, delimiter, text_type):
                 output_list.append(TextNode(split_node[i], text_type))
     return output_list
 
+
+
+def extract_markdown_images(text):
+    # takes raw markdown text and returns list of tuples.
+    # each tuple contains the (alt text, url) of each img
+
+    # E.g. text: text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+
+    return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+
+def extract_markdown_links(text):
+    # takes raw markdown text and returns list of tuples
+    # each tuple contains the (anchor text, url) of each link
+
+    return re.findall(r"[^!]\[(.*?)\]\((.*?)\)", text)
 

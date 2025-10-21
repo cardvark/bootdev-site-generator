@@ -1,7 +1,7 @@
 import unittest
 
 from textnode import TextNode, TextType
-from inline_markdown import split_node_delimeter
+from inline_markdown import * 
 
 class TestNodeSplitter(unittest.TestCase):
     print("\n\nrunning text node splitting tests...")
@@ -74,6 +74,51 @@ class TestNodeSplitter(unittest.TestCase):
             str(e.exception),
             "Unmatched text modifier; invalid Markdown syntax."
         )
+class TestMarkdownExtraction(unittest.TestCase):
+    print("\n\nRunning tests on image and link extraction from markdown text.")
+
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+
+    def test_extract_link(self):
+        matches = extract_markdown_links(
+            "This is text with a link of a [banana](www.banana.com)."
+        )
+        self.assertListEqual(
+            [("banana", "www.banana.com")],
+            matches
+        )
+    
+    def test_extract_only_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and a link of a [banana](www.banana.com)."
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+    
+    def test_extract_only_links(self):
+        matches = extract_markdown_links(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and a link of a [banana](www.banana.com)."
+        )
+        self.assertListEqual(
+            [("banana", "www.banana.com")],
+            matches
+        )
+
+    def test_extract_multiple_links_only(self):
+        matches = extract_markdown_links(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and a link of a [banana](www.banana.com). and a link of a [potato](www.potato.com)"
+        )
+        self.assertListEqual(
+            [
+                ("banana", "www.banana.com"),
+                ("potato", "www.potato.com")
+            ],
+            matches
+        )
+        
     
 
 if __name__ == "__main__":
