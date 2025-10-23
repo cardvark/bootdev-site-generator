@@ -268,5 +268,106 @@ class TestImageAndLinkNodeSplitting(unittest.TestCase):
             new_nodes,
         )
 
+class TestTextToNodes(unittest.TestCase):
+    print("\n\nTesting full transformation function...")
+
+    def test_simple_gamut(self):
+        print("\n\nTesting a mixed line of marked down text.")
+
+        
+        raw_text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+
+        processed_nodes = text_to_nodes(raw_text)
+
+        for node in processed_nodes:
+            print(node)
+
+        self.assertListEqual(
+            [
+                TextNode("This is ", TextType.PLAIN),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.PLAIN),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.PLAIN),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.PLAIN),
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.PLAIN),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+            processed_nodes
+        )
+    
+    def test_single_image(self):
+        print("\n\nTesting a single image.")
+        single_image_text = "![alt text](www.url.com)"
+
+        processed_nodes = text_to_nodes(single_image_text)
+
+        for node in processed_nodes:
+            print(node)
+
+        self.assertListEqual(
+            [
+                TextNode("alt text", TextType.IMAGE, "www.url.com")
+            ],
+            processed_nodes
+        )
+    
+    def test_plain_text(self):
+        print("\n\nTesting simple plain text.")
+        plain_text = "This is some basic-ass text."
+
+        processed_nodes = text_to_nodes(plain_text)
+
+        for node in processed_nodes:
+            print(node)
+
+        self.assertListEqual(
+            [
+                TextNode("This is some basic-ass text.", TextType.PLAIN)
+            ],
+            processed_nodes
+        )
+
+
+    # TODO: support overlapping markdown formatting.
+
+    # def test_overlapping_formatting(self):
+    #     print("\n\nTesting overlapping formatting...")
+
+    #     raw_text = "This is **bullshit _and_ [frankly](www.url.com)** unneccessary."
+
+    #     processed_nodes = text_to_nodes(raw_text)
+
+    #     for node in processed_nodes:
+    #         print(node)
+
+    #     self.assertListEqual(
+    #         [
+    #             TextNode("This is ", TextType.PLAIN),
+    #             TextNode("bullshit ", TextType.BOLD),
+    #             TextNode("and", TextType.ITALIC),
+    #             TextNode(" ", TextType.BOLD),
+    #             TextNode("frankly", TextType.LINK, "www.url.com"),
+    #             TextNode("unnecessary.", TextType.PLAIN)
+    #         ],
+    #         processed_nodes
+    #     )
+    
+    def test_empty_string(self):
+        print("\n\nTesting empty string error...")
+
+        empty_string = ""
+
+        with self.assertRaises(Exception) as e:
+            processed_nodes = text_to_nodes(empty_string)
+
+        self.assertEqual(
+            str(e.exception),
+            "Must contained text."
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

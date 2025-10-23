@@ -22,6 +22,9 @@ class HTMLNode():
         return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
 
 class LeafNode(HTMLNode):
+    # HTMLNode that should ALWAYS have value, and NEVER have children.
+    # props are optional.
+
     def __init__(self, tag, value, props=None):
         super().__init__(tag, value, None, props)
 
@@ -42,6 +45,9 @@ class LeafNode(HTMLNode):
         return output_string
 
 class ParentNode(HTMLNode):
+    # HTMLNode that should NEVER have values, and must ALWAYS have children.
+    # props are optional.
+
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
     

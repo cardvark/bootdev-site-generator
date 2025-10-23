@@ -25,7 +25,6 @@ def split_node_delimeter(old_nodes, delimiter, text_type):
     return output_list
 
 
-
 def extract_markdown_images(text):
     # takes raw markdown text and returns list of tuples.
     # each tuple contains the (alt text, url) of each img
@@ -112,3 +111,19 @@ def split_nodes_link(old_nodes):
             output_list.append(TextNode(old_text, old_node.text_type))
     
     return output_list
+
+def text_to_nodes(text):
+    if not text:
+        raise Exception("Must contained text.")
+    
+    node_list = [TextNode(text, TextType.PLAIN)]
+
+    # Process the list of nodes through each modifier, one at a time.
+
+    node_list = split_node_delimeter(node_list, "**", TextType.BOLD)
+    node_list = split_node_delimeter(node_list, "_", TextType.ITALIC)
+    node_list = split_node_delimeter(node_list, "`", TextType.CODE)
+    node_list = split_nodes_image(node_list)
+    node_list = split_nodes_link(node_list)
+
+    return node_list
