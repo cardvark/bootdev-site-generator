@@ -11,7 +11,7 @@ def extract_title(markdown):
 
     return header.group(0)[2:].strip()
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, base_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}.")
 
     with open(from_path, "r") as f:
@@ -28,6 +28,8 @@ def generate_page(from_path, template_path, dest_path):
 
     html_content = html_template.replace("{{ Title }}", title)
     html_content = html_content.replace("{{ Content }}", content_to_html)
+    html_content = html_content.replace('href="/', f'href="{base_path}')
+    html_content = html_content.replace('src="/', f'src="{base_path}')
 
     dest_directory = os.path.dirname(dest_path)
     if dest_directory and not os.path.exists(dest_directory):
@@ -36,7 +38,7 @@ def generate_page(from_path, template_path, dest_path):
     with open (dest_path, "w") as f:
         f.write(html_content)
 
-def generate_all_content(working_path, template_path, dest_path):
+def generate_all_content(working_path, template_path, dest_path, base_path):
     # takes a source folder and a destination folder, then recursively looks through each source folder and generates html for each final in that folder, calling itself again with an updated working path and dest path, based on the next folder.
     
     for path in os.listdir(working_path):
@@ -52,10 +54,10 @@ def generate_all_content(working_path, template_path, dest_path):
             print(f"This is a markdown file: {path}")
             print(f"Generating to destination: {full_dest_path}")
 
-            generate_page(full_working_path, template_path, full_dest_path)
+            generate_page(full_working_path, template_path, full_dest_path, base_path)
 
         elif os.path.isdir(full_working_path):
             print(f"This is a folder: {full_working_path}")
             print(f"Running generate_all_content with working dir: {full_working_path} and destination path: {full_dest_path}")
 
-            generate_all_content(full_working_path, template_path, full_dest_path)
+            generate_all_content(full_working_path, template_path, full_dest_path, base_path)
