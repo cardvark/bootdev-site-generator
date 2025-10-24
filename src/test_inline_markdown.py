@@ -178,6 +178,28 @@ class TestImageAndLinkNodeSplitting(unittest.TestCase):
             ],
             new_nodes,
         )
+    
+    def test_links_starting(self):
+        print("\n\nTesting links at start of plain text.")
+
+        plain_text_nodes = [
+            TextNode("[Starting link solo](www.link.com)", TextType.PLAIN),
+            TextNode("[Starting sentence](www.sentence-link.com) with a link.",TextType.PLAIN)
+        ]
+
+        new_nodes = split_nodes_link(plain_text_nodes)
+
+        for node in new_nodes:
+            print(node)
+
+        self.assertListEqual(
+            [
+                TextNode("Starting link solo", TextType.LINK, "www.link.com"),
+                TextNode("Starting sentence", TextType.LINK, "www.sentence-link.com"),
+                TextNode(" with a link.", TextType.PLAIN),
+            ],
+            new_nodes,
+        )
 
     def test_images_only_mixed(self):
         print("\n\nTesting image extraction in mixed image + link markdown text")

@@ -37,7 +37,7 @@ def extract_markdown_links(text):
     # takes raw markdown text and returns list of tuples
     # each tuple contains the (anchor text, url) of each link
 
-    return re.findall(r"[^!]\[(.*?)\]\((.*?)\)", text)
+    return re.findall(r"(?<!\!)\[(.*?)\]\((.*?)\)", text)
 
 
 def split_nodes_image(old_nodes):
@@ -84,6 +84,7 @@ def split_nodes_link(old_nodes):
     
     for old_node in old_nodes:
         link_node_tuples = extract_markdown_links(old_node.text)
+        # print(f"\n\nLink nodes found: {link_node_tuples}")
        
         if not link_node_tuples:
             output_list.append(old_node)

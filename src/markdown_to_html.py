@@ -23,7 +23,7 @@ def list_line_processor(text, ordered=False):
         leaf_nodes = text_nodes_to_html(text_nodes)
         line_parent = ParentNode("li", leaf_nodes)
         children_nodes.append(line_parent)
-    
+
     return children_nodes
 
 def text_to_children(text, block_type):

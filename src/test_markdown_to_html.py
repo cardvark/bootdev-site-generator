@@ -92,11 +92,18 @@ class TestMarkdownToHTML(unittest.TestCase):
         unordered_tests = [
             (
                 "- An unordered list\n- of items.\n- for stuff.",
+
                 "<div><ul><li>An unordered list</li><li>of items.</li><li>for stuff.</li></ul></div>"
             ),
             (
                 "- Another unordered list\n- But this one has **bolded** text\n- And even `code text`.",
+
                 "<div><ul><li>Another unordered list</li><li>But this one has <b>bolded</b> text</li><li>And even <code>code text</code>.</li></ul></div>"
+            ),
+            (
+                "- [Link testing](www.link-test.com)\n- Testing links\n- At start and [end](www.end-test.com).",
+                
+                '<div><ul><li><a href="www.link-test.com">Link testing</a></li><li>Testing links</li><li>At start and <a href="www.end-test.com">end</a>.</li></ul></div>'
             )
         ]
 
